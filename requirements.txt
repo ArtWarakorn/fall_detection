@@ -1,0 +1,40 @@
+# ติดตั้งทั้งหมด: pip install -r requirements.txt
+# แนะนำ Python 3.10+
+
+# ---------------------------------------------------------------
+# คนที่ 1  กล้อง + YOLO + tracking + fall logic
+#          (camera.py, detector.py, fall_logic.py, pipeline.py)
+# ---------------------------------------------------------------
+ultralytics>=8.3.0          # YOLO (pose/detect) + tracker ในตัว (ByteTrack/BoT-SORT) — ติดตั้ง torch ให้อัตโนมัติ
+opencv-python>=4.9.0        # เปิดกล้อง/อ่านคลิป วาดกรอบ บันทึก snapshot
+numpy>=1.26.0               # คำนวณ keypoint, มุม, ความเร็ว
+lap>=0.5.12                 # ใช้โดย tracker ของ ultralytics
+
+# ---------------------------------------------------------------
+# คนที่ 2  API + ฐานข้อมูล + แจ้งเตือน + config
+#          (main.py, schemas.py, database.py, notifier.py, config.py)
+#          * SQLite ใช้ sqlite3 ที่มากับ Python ไม่ต้องติดตั้งเพิ่ม
+# ---------------------------------------------------------------
+fastapi>=0.115.0            # เว็บ API
+uvicorn[standard]>=0.30.0   # รันเซิร์ฟเวอร์: uvicorn app.main:app --reload
+pydantic>=2.7.0             # schemas (รูปแบบ JSON)
+pydantic-settings>=2.3.0    # อ่านค่าจาก .env.local ใน config.py
+python-dotenv>=1.0.1        # โหลดไฟล์ .env
+httpx>=0.27.0               # ส่งข้อความ/รูปไป Telegram Bot API (และใช้กับ TestClient)
+python-multipart>=0.0.9     # รับ form / อัปโหลดไฟล์ผ่าน API
+
+# ---------------------------------------------------------------
+# คนที่ 3  หน้าเว็บ + รายงาน
+#          (web/, docs/)
+# ---------------------------------------------------------------
+jinja2>=3.1.4               # render หน้าเว็บ (template) ผ่าน FastAPI
+aiofiles>=23.2.1            # เสิร์ฟไฟล์ static / snapshot
+
+# ---------------------------------------------------------------
+# ทดสอบและประเมินผล (ทุกคน)
+#          (tests/test_fall_logic.py, tests/test_api.py, tests/evaluate.py)
+# ---------------------------------------------------------------
+pytest>=8.2.0               # รันเทสต์: pytest tests/
+scikit-learn>=1.5.0         # precision / recall / F1 / confusion matrix ใน evaluate.py
+pandas>=2.2.0               # สรุปผลการประเมินเป็นตาราง
+matplotlib>=3.9.0           # กราฟผลการประเมินสำหรับรายงาน/สไลด์
