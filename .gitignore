@@ -1,1 +1,24 @@
+# secrets
+.env
 .env.local
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# runtime data
+data/falls.db
+data/snapshots/*
+!data/snapshots/.gitkeep
+
+# model weights
+*.pt
+*.onnx
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+.ipynb_checkpoints/
