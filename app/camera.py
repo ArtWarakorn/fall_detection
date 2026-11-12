@@ -51,20 +51,28 @@ def open_camera():
     return None
 
 
-cap = open_camera()
-if cap is None:
-    raise SystemExit(1)
+# รันด้วย: python -m app.camera
+if __name__ == "__main__":
+    from detector import PoseDetector
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("อ่านเฟรมไม่ได้")
-        break
-   
-    cv2.imshow("Original", frame)
+    cap = open_camera()
+    if cap is None:
+        raise SystemExit(1)
 
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+    detector = PoseDetector()
 
-cap.release()
-cv2.destroyAllWindows()
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("อ่านเฟรมไม่ได้")
+            break
+
+        people, annotated = detector.detect(frame)  # YOLO pose + tracking
+
+        cv2.imshow("YOLO Pose", annotated)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
